@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer();
 app.prepare().then(() => {
+    process.env.API_ENDPOINT = process.env.API_ENDPOINT || 'http://localhost'
     const server = express()
     // for parsing application/json
     server.use(bodyParser.json());
@@ -20,7 +21,7 @@ app.prepare().then(() => {
         next()
     });
     let filePath = __dirname + '/uploads/';
-    let urlPrefix = "http://localhost:300/download/"
+    let urlPrefix = process.env.API_ENDPOINT+"/download/"
     var storage = multer.diskStorage({
         destination: filePath,
         filename: function (req, file, cb) {
@@ -43,6 +44,6 @@ app.prepare().then(() => {
     })
     server.listen(port, (err) => {
         if (err) throw err
-        console.log(`> Ready on http://localhost:${port}`)
+        console.log(`> Ready on ${process.env.API_ENDPOINT}:${port}`)
     })
 })
