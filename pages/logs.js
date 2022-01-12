@@ -3,7 +3,8 @@ import Head from 'next/head'
 import {useState} from "react";
 
 Logs.getInitialProps = async (ctx) => {
-    const res = await fetch('http://localhost:3000/api?demo=123&xxx&yyyy')
+    console.log(ctx.req.headers.host)
+    const res = await fetch(process.env.API_ENDPOINT+ '/api?demo=123&xxx&yyyy')
     const json = await res.json()
     return {
         list: json,
