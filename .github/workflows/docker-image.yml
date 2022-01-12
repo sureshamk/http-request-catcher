@@ -1,18 +1,24 @@
-name: Docker Image CI
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+name: Publish Docker
+on: [push]
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - uses: actions/checkout@master
+      #      - name: Build, Tag, Publish Docker
+      #        uses: HurricanKai/Publish-Docker-Github-Action@1.12.1
+      #        if: contains(github.ref, 'refs/tags/v')
+      #        with:
+      #          name: sureshamk/flux-ui
+      #          username: ${{ secrets.DOCKER_USERNAME }}
+      #          password: ${{ secrets.DOCKER_PASSWORD }}
+      #          cache: true
+      #          tagging: true
+      - name: Build, Tag, Publish Docker
+        uses: mr-smithers-excellent/docker-build-push@v1.0
+        with:
+          image: sureshamk/http-request-catcher
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
