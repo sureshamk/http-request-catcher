@@ -1,23 +1,19 @@
-FROM node:lts as dependencies
-WORKDIR /my-project
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+FROM node:lts
 
-FROM node:lts as builder
-WORKDIR /my-project
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+
+RUN yarn
+# If you are building your code for production
+# RUN npm ci --only=production
+
+# Bundle app source
 COPY . .
-COPY --from=dependencies /my-project/node_modules ./node_modules
 RUN yarn build
-
-FROM node:lts as runner
-WORKDIR /my-project
-ENV NODE_ENV production
-# If you are using a custom next.config.js file, uncomment this line.
-# COPY --from=builder /my-project/next.config.js ./
-COPY --from=builder /my-project/public ./public
-COPY --from=builder /my-project/.next ./.next
-COPY --from=builder /my-project/node_modules ./node_modules
-COPY --from=builder /my-project/package.json ./package.json
-
-EXPOSE 3000
-CMD ["yarn", "start"]
+EXPOSE 3030
+CMD [ "yarn", "start" ]
