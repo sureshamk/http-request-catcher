@@ -44,6 +44,6 @@ app.prepare().then(() => {
     })
     server.listen(port, (err) => {
         if (err) throw err
-        console.log(`> Ready on ${process.env.API_ENDPOINT}:${port}`)
+        console.log(`> Ready on 0.0.0.0:${port}`)
     })
 })
