@@ -4,7 +4,7 @@ import {useState} from "react";
 
 Logs.getInitialProps = async (ctx) => {
     console.log(ctx.req.headers.host)
-    const res = await fetch(process.env.API_ENDPOINT+ '/api?demo=123&xxx&yyyy')
+    const res = await fetch(process.env.API_ENDPOINT+':'+process.env.PORT+ '/api?demo=123&xxx&yyyy')
     const json = await res.json()
     return {
         list: json,
