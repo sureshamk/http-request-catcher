@@ -1,9 +1,12 @@
 import Head from 'next/head'
 
 import {useState} from "react";
+import {useRouter} from 'next/router'
 
-Logs.getInitialProps = async (ctx) => {
-    const res = await fetch(process.env.API_ENDPOINT+ '/api')
+Index.getInitialProps = async (ctx) => {
+    const router = useRouter()
+    const {pid} = router.query
+    const res = await fetch(process.env.API_ENDPOINT + '/api/capture/' + pid)
     const json = await res.json()
     return {
         list: json,
@@ -11,7 +14,7 @@ Logs.getInitialProps = async (ctx) => {
 }
 
 
-function Logs({list}) {
+function Index({list}) {
     let [detail, setDetail] = useState({});
 
     // let [list,setList] = useState(json)
@@ -45,7 +48,7 @@ function Logs({list}) {
         return (
             <div>
                 <div>
-                    <h5>Headers </h5>
+                    <h6>Headers </h6>
                     <ul>
                         {Object.entries(details.headers).map(([key, value]) => (
                             <li key={key}>{key}: {value}</li>
@@ -110,4 +113,4 @@ function Logs({list}) {
     )
 }
 
-export default Logs;
+export default Index;
